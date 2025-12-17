@@ -177,6 +177,4 @@ This solution delivers:
 * Measurable evaluation via Mean Recall@K
 * Balanced recommendations for multi-domain queries
 
-The system strictly adheres to all technical, evaluation, and format requirements specified in the assignment.
 
-**Status: Submission-ready and evaluation-compliant.**
