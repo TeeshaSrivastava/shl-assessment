@@ -1,6 +1,8 @@
-# Python
+# Python cache
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
 # Virtual environment
 venv/
@@ -9,3 +11,19 @@ venv/
 # OS files
 .DS_Store
 Thumbs.db
+
+# ===== IMPORTANT FOR YOUR PROJECT =====
+
+# Large generated embedding artifacts (DO NOT COMMIT)
+embeddings/faiss.index
+embeddings/metadata.json
+
+# Jupyter / temp files
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Excel temp files
+~$*.xlsx
+
