@@ -1,44 +1,37 @@
 import json
 import numpy as np
 import faiss
-from sentence_transformers import SentenceTransformer
 import os
+from sentence_transformers import SentenceTransformer
 
 DATA_PATH = "data/assessments_clean.json"
 INDEX_PATH = "embeddings/faiss.index"
 META_PATH = "embeddings/metadata.json"
 
-# Load data
-with open(DATA_PATH, "r", encoding="utf-8") as f:
-    assessments = json.load(f)
+def build_embeddings():
+    print("Building embeddings...")
 
-print(f"Loaded {len(assessments)} assessments")
+    with open(DATA_PATH, "r", encoding="utf-8") as f:
+        assessments = json.load(f)
 
-# Prepare text for embedding
-texts = []
-for a in assessments:
-    combined = f"{a.get('name', '')}. {a.get('description', '')}. {' '.join(a.get('test_type', []))}"
-    texts.append(combined)
+    texts = [
+        f"{a.get('name','')} {a.get('description','')} {' '.join(a.get('test_type', []))}"
+        for a in assessments
+    ]
 
-# Load embedding model
-model = SentenceTransformer("all-MiniLM-L6-v2")
+    model = SentenceTransformer("all-MiniLM-L6-v2")
+    embeddings = model.encode(texts, show_progress_bar=True).astype("float32")
 
-# Generate embeddings
-print("Generating embeddings...")
-embeddings = model.encode(texts, show_progress_bar=True)
+    index = faiss.IndexFlatL2(embeddings.shape[1])
+    index.add(embeddings)
 
-embeddings = np.array(embeddings).astype("float32")
+    os.makedirs("embeddings", exist_ok=True)
+    faiss.write_index(index, INDEX_PATH)
 
-# Build FAISS index
-dimension = embeddings.shape[1]
-index = faiss.IndexFlatL2(dimension)
-index.add(embeddings)
+    with open(META_PATH, "w", encoding="utf-8") as f:
+        json.dump(assessments, f, indent=2)
 
-# Save index and metadata
-faiss.write_index(index, INDEX_PATH)
+    print("Embeddings & metadata created")
 
-with open(META_PATH, "w", encoding="utf-8") as f:
-    json.dump(assessments, f, indent=2)
-
-print("FAISS index built successfully")
-print(f"Index size: {index.ntotal}")
+if __name__ == "__main__":
+    build_embeddings()
