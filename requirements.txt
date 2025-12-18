@@ -1,4 +1,3 @@
-
 fastapi
 uvicorn
 numpy
@@ -7,8 +6,10 @@ requests
 scikit-learn
 beautifulsoup4
 lxml
+faiss-cpu==1.7.4
 
-# ML stack (CPU-only, Railway-safe)
+# ---- Force CPU-only PyTorch ----
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.0.1
 sentence-transformers==2.2.2
-faiss-cpu==1.7.4
+
