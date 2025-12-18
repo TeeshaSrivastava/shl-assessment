@@ -3,4 +3,8 @@ uvicorn
 sentence-transformers
 faiss-cpu
 numpy
+pandas
 requests
+beautifulsoup4
+lxml
+scikit-learn
