@@ -1,3 +1,4 @@
+
 fastapi
 uvicorn
 numpy
@@ -7,7 +8,7 @@ scikit-learn
 beautifulsoup4
 lxml
 
-# Force CPU-only ML stack
-torch==2.1.2+cpu
+# ML stack (CPU-only, Railway-safe)
+torch==2.0.1
 sentence-transformers==2.2.2
 faiss-cpu==1.7.4
